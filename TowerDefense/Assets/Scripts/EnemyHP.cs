@@ -10,6 +10,9 @@ public class EnemyHP : MonoBehaviour
     Enemy enemy;
     SpriteRenderer spriteRenderer;
 
+    public float MaxHP => maxHP;
+    public float CurrentHP => currentHP;
+
     private void Awake()
     {
         currentHP = maxHP;

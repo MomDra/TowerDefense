@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] GameObject enemyPrefab; // 적 프리팹
+    [SerializeField] GameObject enemyHPSliderPrefab; // 적 체력을 나타내는 Slider UI 프리팹
+    [SerializeField] Transform canvasTransform; // UI를 표현하는 Canvas 오브젝트의 Transform
     [SerializeField] float spawnTime; // 적 생성 주기
     [SerializeField] Transform[] wayPoints; // 현재 스테이지의 이동 경로
 
@@ -32,6 +34,8 @@ public class EnemySpawner : MonoBehaviour
             enemy.Setup(this, wayPoints);
             enemyList.Add(enemy);
 
+            SpawnEnemyHPSlider(clone);
+
             yield return new WaitForSeconds(spawnTime);
         }
     }
@@ -43,5 +47,21 @@ public class EnemySpawner : MonoBehaviour
 
         // 적 오브젝트 삭제
         Destroy(enemy.gameObject);
+    }
+
+    void SpawnEnemyHPSlider(GameObject enemy)
+    {
+        // 적 체력을 나타내는 Slider UI 생성
+        GameObject sliderClone = Instantiate(enemyHPSliderPrefab);
+        // Slider UI 오브젝트를 parent("Canvas" 오브젝트)의 자식으로 설정
+        // Tip. UI는 캔버스의 자식오브젝트로 설정되어 있어야 화면에 보인다
+        sliderClone.transform.SetParent(canvasTransform);
+        // 계층 설정으로 바뀐 크기를 다시 (1, 1, 1)로 설정
+        sliderClone.transform.localScale = Vector3.one;
+
+        // Slider UI가 쫒아다닐 대상을 본인으로 설정
+        sliderClone.GetComponent<SliderPositionAutoSetter>().Setup(enemy.transform);
+        // Slider UI에 자신의 체력 정보를 표시하도록 설정
+        sliderClone.GetComponent<EnemyHPViewer>().Setup(enemy.GetComponent<EnemyHP>());
     }
 }
