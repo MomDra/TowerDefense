@@ -8,10 +8,12 @@ public class Enemy : MonoBehaviour
     Transform[] wayPoints;
     int currentIndex = 0;
     Movement2D movement2D;
+    EnemySpawner enemySpawner;
 
-    public void Setup(Transform[] wayPoints)
+    public void Setup(EnemySpawner enemySpawner,Transform[] wayPoints)
     {
         movement2D = GetComponent<Movement2D>();
+        this.enemySpawner = enemySpawner;
 
         // 적 이동 경로 WayPoints 정보 설정
         wayPointCount = wayPoints.Length;
@@ -61,7 +63,15 @@ public class Enemy : MonoBehaviour
         else
         {
             // 적 오브젝트 삭제
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            OnDie();
         }
     }
+
+    public void OnDie()
+    {
+        // EnemySpawner에서 리스트로 적 정보를 관리하기 대문에 Destroy()를 직접하지 않고
+        // EnemySpawner에게 본인이 삭제될 때 필요한 처리를 하도록 DestroyEnemy() 함수 호출
+        enemySpawner.DestroyEnemy(this);
+;   }
 }
