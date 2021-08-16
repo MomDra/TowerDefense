@@ -11,11 +11,15 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] Transform[] wayPoints; // 현재 스테이지의 이동 경로
     [SerializeField] PlayerHP playerHP; // 플에이어의 체력 컴포넌트
     [SerializeField] PlayerGold playerGold; // 플레이어의 골드 컴포넌트
-    Wave currentWave;
+    Wave currentWave;// 현재 웨이브 정보
+    int currentEnemyCount; // 현재 웨이브에 남아있는 적 숫자 (웨이브 시작시 max로 설정, 적 사망시 -1)
     List<Enemy> enemyList; // 현재 맵에 존재하는 모든 적의 정보
 
     // 적의 생성과 삭제는 EnemySpawner에서 하기 때문에 Set은 필요 없다.
     public List<Enemy> EnemyList => enemyList;
+    // 현재 웨이브의 남아있는 적, 최대 적 숫자
+    public int CurrentEnemyCount => currentEnemyCount;
+    public int MaxEnemyCount => currentWave.maxEnemyCount;
 
     private void Awake()
     {
@@ -30,6 +34,8 @@ public class EnemySpawner : MonoBehaviour
     {
         // 매개변수로 받아온 웨이브 정보 저장
         currentWave = wave;
+        // 현재 웨이브의 최대 적 숫자를 저장
+        currentEnemyCount = currentWave.maxEnemyCount;
         // 현재 웨이브 시작
         StartCoroutine(SpawnEnemy());
     }
@@ -70,9 +76,10 @@ public class EnemySpawner : MonoBehaviour
             playerGold.CurrentGold += gold;
         }
 
+        // 적이 사망할 때마다 현재 웨이브의 생존 적 숫자 감소 (UI 표시용)
+        currentEnemyCount--;
         // 리스트에서 사망하는 적 정보 삭제
         enemyList.Remove(enemy);
-
         // 적 오브젝트 삭제
         Destroy(enemy.gameObject);
     }
