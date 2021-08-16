@@ -16,5 +16,6 @@ public class TowerTemplate : ScriptableObject
         public float rate;
         public float range;
         public int cost;
+        public int sell;
     }
 }

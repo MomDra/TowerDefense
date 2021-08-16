@@ -80,4 +80,12 @@ public class TowerDataViewer : MonoBehaviour
             systemTextViewer.PrintText(SystemType.Money);
         }
     }
+
+    public void OnClickEventTowerSell()
+    {
+        // 타워 판매
+        currentTower.Sell();
+        // 선택한 타워가 사라져서 Panel, 공격범위 Off
+        OffPanel();
+    }
 }

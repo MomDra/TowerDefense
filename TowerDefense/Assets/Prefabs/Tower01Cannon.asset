@@ -19,13 +19,16 @@ MonoBehaviour:
     rate: 0.5
     range: 2
     cost: 50
+    sell: 25
   - sprite: {fileID: 21300000, guid: 8a942812263582742912e948566ff6ea, type: 3}
     damage: 1.5
     rate: 0.4
     range: 2.3
     cost: 100
+    sell: 75
   - sprite: {fileID: 21300000, guid: a8483bd71c566cc47825947e35d6c7be, type: 3}
     damage: 2
     rate: 0.3
     range: 2.5
     cost: 150
+    sell: 150

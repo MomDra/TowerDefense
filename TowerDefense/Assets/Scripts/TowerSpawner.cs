@@ -35,7 +35,7 @@ public class TowerSpawner : MonoBehaviour
             Vector3 position = tileTransform.position + Vector3.back;
             GameObject clone = Instantiate(towerTemplate.towerPrefab, position, Quaternion.identity);
             // 타워 무기에 enemySpawner 정보 전달
-            clone.GetComponent<TowerWeapon>().Setup(enemySpawner, playerGold);
+            clone.GetComponent<TowerWeapon>().Setup(enemySpawner, playerGold, tile);
         }
     }
 }
