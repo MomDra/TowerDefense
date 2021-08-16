@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] GameObject enemyPrefab; // 적 프리팹
+    //[SerializeField] GameObject enemyPrefab; // 적 프리팹
     [SerializeField] GameObject enemyHPSliderPrefab; // 적 체력을 나타내는 Slider UI 프리팹
     [SerializeField] Transform canvasTransform; // UI를 표현하는 Canvas 오브젝트의 Transform
-    [SerializeField] float spawnTime; // 적 생성 주기
+    //[SerializeField] float spawnTime; // 적 생성 주기
     [SerializeField] Transform[] wayPoints; // 현재 스테이지의 이동 경로
     [SerializeField] PlayerHP playerHP; // 플에이어의 체력 컴포넌트
     [SerializeField] PlayerGold playerGold; // 플레이어의 골드 컴포넌트
+    Wave currentWave;
     List<Enemy> enemyList; // 현재 맵에 존재하는 모든 적의 정보
 
     // 적의 생성과 삭제는 EnemySpawner에서 하기 때문에 Set은 필요 없다.
@@ -22,14 +23,27 @@ public class EnemySpawner : MonoBehaviour
         enemyList = new List<Enemy>();
 
         // 적 생성 코루틴 함수 호출
+        //StartCoroutine(SpawnEnemy());
+    }
+
+    public void StartWave(Wave wave)
+    {
+        // 매개변수로 받아온 웨이브 정보 저장
+        currentWave = wave;
+        // 현재 웨이브 시작
         StartCoroutine(SpawnEnemy());
     }
 
     IEnumerator SpawnEnemy()
     {
-        while (true)
+        // 현재 웨이브에서 생성한 적 숫자
+        int spawnEnemyCount = 0;
+
+        // 현재 웨이브에서 생성되어야 하는 적의 숫자만큼 적을 생성하고 코루틴 종료
+        while(spawnEnemyCount < currentWave.maxEnemyCount)
         {
-            GameObject clone = Instantiate(enemyPrefab);
+            int enemyIndex = Random.Range(0, currentWave.enemyPrefabs.Length);
+            GameObject clone = Instantiate(currentWave.enemyPrefabs[enemyIndex]);
             Enemy enemy = clone.GetComponent<Enemy>();
 
             enemy.Setup(this, wayPoints);
@@ -37,8 +51,11 @@ public class EnemySpawner : MonoBehaviour
 
             SpawnEnemyHPSlider(clone);
 
-            yield return new WaitForSeconds(spawnTime);
+            spawnEnemyCount++;
+
+            yield return new WaitForSeconds(currentWave.spawnTime);
         }
+
     }
 
     public void DestroyEnemy(EnemyDestoryType type, Enemy enemy, int gold)
