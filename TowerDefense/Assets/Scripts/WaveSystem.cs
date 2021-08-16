@@ -8,6 +8,10 @@ public class WaveSystem : MonoBehaviour
     [SerializeField] EnemySpawner enemySpawner;
     int currentWaveIndex = -1; // 현재 웨이브 인덱스
 
+    // 웨이브 정보 출력을 위한 Get 프로퍼티 (현재 웨이브, 총 웨이브)
+    public int CurrentWave => currentWaveIndex + 1; // 시작이 0이기 때문에 +1
+    public int MaxWave => waves.Length;
+
     public void StartWave()
     {
         // 현재 맵에 적이 없고, Wave가 남아 있으면
