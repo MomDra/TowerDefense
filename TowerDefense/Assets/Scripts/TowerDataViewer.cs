@@ -11,6 +11,7 @@ public class TowerDataViewer : MonoBehaviour
     [SerializeField] TextMeshProUGUI textRate;
     [SerializeField] TextMeshProUGUI textRange;
     [SerializeField] TextMeshProUGUI textLevel;
+    [SerializeField] TowerAttackRange towerAttackRange;
 
     TowerWeapon currentTower;
 
@@ -35,12 +36,16 @@ public class TowerDataViewer : MonoBehaviour
         gameObject.SetActive(true);
 
         UpdateTowerData();
+
+        towerAttackRange.OnAttackRange(currentTower.transform.position, currentTower.Range);
     }
 
     public void OffPanel()
     {
         // 타워 정보 Panel Off
         gameObject.SetActive(false);
+        // 타워 공격범위 Sprite Off
+        towerAttackRange.OffAttackRange();
     }
 
     void UpdateTowerData()
