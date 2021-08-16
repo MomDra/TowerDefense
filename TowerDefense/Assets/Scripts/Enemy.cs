@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     int currentIndex = 0;
     Movement2D movement2D;
     EnemySpawner enemySpawner;
+    [SerializeField] int gold = 10;
 
     public void Setup(EnemySpawner enemySpawner,Transform[] wayPoints)
     {
@@ -63,6 +64,9 @@ public class Enemy : MonoBehaviour
         // 현재 위치가 마지막 wayPoints이면
         else
         {
+            // 목표지점에 도달해서 사망할 때는 돈을 주지 않도록
+            gold = 0;
+
             // 적 오브젝트 삭제
             //Destroy(gameObject);
             OnDie(EnemyDestoryType.Arrive);
@@ -73,6 +77,6 @@ public class Enemy : MonoBehaviour
     {
         // EnemySpawner에서 리스트로 적 정보를 관리하기 대문에 Destroy()를 직접하지 않고
         // EnemySpawner에게 본인이 삭제될 때 필요한 처리를 하도록 DestroyEnemy() 함수 호출
-        enemySpawner.DestroyEnemy(type, this);
+        enemySpawner.DestroyEnemy(type, this, gold);
 ;   }
 }

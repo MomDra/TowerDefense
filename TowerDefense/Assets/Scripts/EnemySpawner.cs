@@ -10,6 +10,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] float spawnTime; // 적 생성 주기
     [SerializeField] Transform[] wayPoints; // 현재 스테이지의 이동 경로
     [SerializeField] PlayerHP playerHP; // 플에이어의 체력 컴포넌트
+    [SerializeField] PlayerGold playerGold; // 플레이어의 골드 컴포넌트
     List<Enemy> enemyList; // 현재 맵에 존재하는 모든 적의 정보
 
     // 적의 생성과 삭제는 EnemySpawner에서 하기 때문에 Set은 필요 없다.
@@ -40,11 +41,16 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    public void DestroyEnemy(EnemyDestoryType type, Enemy enemy)
+    public void DestroyEnemy(EnemyDestoryType type, Enemy enemy, int gold)
     {
         if(type == EnemyDestoryType.Arrive)
         {
             playerHP.TakeDamage(1);
+        }
+        // 적이 플레이어의 발사체에게 사망했을 때
+        else if(type == EnemyDestoryType.Kill)
+        {
+            playerGold.CurrentGold += gold;
         }
 
         // 리스트에서 사망하는 적 정보 삭제
