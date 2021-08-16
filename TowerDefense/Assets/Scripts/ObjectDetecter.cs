@@ -5,6 +5,7 @@ using UnityEngine;
 public class ObjectDetecter : MonoBehaviour
 {
     [SerializeField] TowerSpawner towerSpawner;
+    [SerializeField] TowerDataViewer towerDataViewer;
 
     Camera mainCamera;
     Ray ray;
@@ -36,6 +37,11 @@ public class ObjectDetecter : MonoBehaviour
                 {
                     // 타워를 생성하는 SpawnTower() 호출
                     towerSpawner.SpawnTower(hit.transform);
+                }
+                // 타워를 선택하면 해당 타워 정보를 출력하는 타워 정보장 On
+                else if (hit.transform.CompareTag("Tower"))
+                {
+                    towerDataViewer.OnPanel(hit.transform);
                 }
             }
         }
