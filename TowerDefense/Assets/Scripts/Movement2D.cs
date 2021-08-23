@@ -6,8 +6,18 @@ public class Movement2D : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
     [SerializeField] Vector3 moveDirection;
+    float baseMoveSpeed;
 
-    public float MoveSpeed => moveSpeed;
+    public float MoveSpeed
+    {
+        set => moveSpeed = Mathf.Max(0, value);
+        get => moveSpeed;
+    }
+
+    private void Awake()
+    {
+        baseMoveSpeed = moveSpeed;
+    }
 
     private void Update()
     {
@@ -17,5 +27,10 @@ public class Movement2D : MonoBehaviour
     public void MoveTo(Vector3 direction)
     {
         moveDirection = direction;
+    }
+
+    public void ResetMoveSpeed()
+    {
+        moveSpeed = baseMoveSpeed;
     }
 }

@@ -14,6 +14,7 @@ public class TowerTemplate : ScriptableObject
     {
         public Sprite sprite;
         public float damage;
+        public float slow; // 감속 퍼센트
         public float rate;
         public float range;
         public int cost;
